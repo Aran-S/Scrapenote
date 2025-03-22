@@ -66,18 +66,24 @@
         /><br />
         <button type="submit">Scrape Blog</button><br />
       </form>
-      <!-- <form action="/save_note" method="POST">
-        <textarea
-          name="note"
-          placeholder="Write your note here..."
+      <form action="/fetch_source" method="POST">
+        <input
+          type="url"
+          name="page_url"
+          placeholder="Enter page URL"
           required
-        ></textarea>
-        <button type="submit">Save Note</button>
-      </form> -->
+        /><br />
+        <button type="submit">Fetch Source Code</button><br />
+      </form>
       {% if scraped_content %}
       <div class="note">
         <h2>Scraped Content</h2>
         <p>{{ scraped_content }}</p>
+      </div>
+      {% endif %} {% if page_source %}
+      <div class="note">
+        <h2>Page Source Code</h2>
+        <pre>{{ page_source }}</pre>
       </div>
       {% endif %}
       <div id="notes">

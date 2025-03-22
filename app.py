@@ -8,7 +8,8 @@ app.secret_key = 'your_secret_key'  # Replace with a secure secret key
 @app.route('/')
 def index():
     scraped_content = session.pop('scraped_content', None)
-    return render_template('index.html', scraped_content=scraped_content)
+    page_source = session.pop('page_source', None)
+    return render_template('index.html', scraped_content=scraped_content, page_source=page_source)
 
 @app.route('/scrape_blog', methods=['POST'])
 def scrape_blog():
@@ -20,6 +21,15 @@ def scrape_blog():
     blog_content = '\n'.join([p.get_text() for p in paragraphs])
     
     session['scraped_content'] = blog_content
+    
+    return redirect(url_for('index'))
+
+@app.route('/fetch_source', methods=['POST'])
+def fetch_source():
+    page_url = request.form['page_url']
+    response = requests.get(page_url)
+    
+    session['page_source'] = response.text
     
     return redirect(url_for('index'))
 
